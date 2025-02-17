@@ -1,0 +1,80 @@
+import flet as ft
+
+def main(page: ft.Page):
+    page.title = "Calculator"
+    page.theme_mode="light"
+    page.window.width = 350
+    page.window.height = 450
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+
+    def button_click(e):
+        button_data = e.control.text
+        if button_data == "C":
+            input_box.value = ""
+        elif button_data == "=":
+            # try:
+                input_box.value = str(eval(input_box.value))
+            # except Exception as e:
+            #     input_box.value = f"Error : {e}"
+        else:
+            input_box.value += button_data
+        page.update()
+
+    input_box = ft.TextField(value="", text_align=ft.TextAlign.RIGHT, width=300)
+
+    buttons = [
+        ["7", "8", "9", "/"],
+        ["4", "5", "6", "*"],
+        ["1", "2", "3", "-"],
+        ["0", "C", "=", "+"],
+    ]
+
+    button_list = []
+
+    for row in buttons:
+        row_buttons = []
+        for abutton in row:
+
+            # button_color = 'grey300'
+            # if not abutton.isdigit(): button_color = 'teal200'
+
+            row_buttons.append(
+                ft.ElevatedButton(
+                    text=abutton,
+                    on_click=button_click,
+                    #bgcolor= button_color
+                )
+            )
+        button_list.append(ft.Row(row_buttons, alignment=ft.MainAxisAlignment.SPACE_AROUND))
+    #
+
+    page.add(input_box)
+    #
+    for row in button_list:
+        page.add(row)
+
+ft.app(target=main)
+
+
+
+# buttons = [
+#     "7", "8", "9", "/",
+#     "4", "5", "6", "*",
+#     "1", "2", "3", "-",
+#     "C", "0", "=", "+"
+# ]
+#
+# grid = ft.GridView(
+#     runs_count=4,
+#     spacing=5,
+#     run_spacing=5,
+#     width=300,
+# )
+#
+#
+# for button in buttons:
+#     button = ft.Button(text=button, data=button, on_click=button_click)
+#     grid.controls.append(button)
+# page.update()
+#
+# page.add(input_box, grid)
