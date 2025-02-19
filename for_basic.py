@@ -83,3 +83,55 @@ if __name__ == "__main__":
     # pyautogui.moveTo(35, 24, duration=1.5)
     # pyautogui.dragRel(200, 200, 1.5, button='left')
     #
+
+
+
+
+
+col1 = [ 'a', 'b', 'c', 'd']
+row1 = [ '1', '2','3','4']
+
+print('for c in col1:')
+for c in col1:
+    print( c , end=' ')
+
+print('\nfor r in row1:')
+for r in row1:
+    print ( r , end=' ')
+
+print('\n#######')
+for c in col1:
+    print (c, end =' ')
+    for r in row1:
+        print( r , end=' ')
+    print()
+
+buttons = [
+    ["7", "8", "9", "/"],
+    ["4", "5", "6", "*"],
+    ["1", "2", "3", "-"],
+    ["0", "C", "=", "+"],
+]
+
+for row in buttons:
+    print(row)
+print('+++++++++++++')
+for row in buttons:
+    for item in row:
+        print(item, end=' ')
+    print()
+
+print('#######')
+maps = { 'a':[ '1', '2','3','4'],
+        'b':[ '1', '2','3','4'],
+         'c':[ '1', '2','3','4'],
+         'd':[ '1', '2','3','4']}
+for key, values in maps.items():
+    print(f"{key}: {', '.join(values)}")
+
+print('#######')
+for key in maps:
+    print(f"{key}: ", end="")
+    for value in maps[key]:
+        print(value, end=" ")
+    print()
