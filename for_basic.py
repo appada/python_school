@@ -135,3 +135,44 @@ for key in maps:
     for value in maps[key]:
         print(value, end=" ")
     print()
+
+
+
+# 스크린샷 찍기
+img = pyautogui.screenshot()
+
+# 파일 저장
+img.save("screenshot.png")
+
+# 특정 문자열을 제목에 포함하는 윈도우 객체 n개 가져오기
+for win in pyautogui.getWindowsWithTitle("메모장"):
+    print(win)
+
+# 특정 문자열을 제목에 포함하는 윈도우 객체 1개 가져오기
+win = pyautogui.getWindowsWithTitle("메모장")[0]
+print(win)
+
+pyautogui.hotkey("shift", "4")
+
+# 전체선택 단축키인 ctrl + a 입력하기
+pyautogui.hotkey("ctrl", "a")
+
+# 조합키 직접 구현하기 (1)
+pyautogui.keyDown("ctrl")
+pyautogui.keyDown("a")
+pyautogui.keyUp("a")
+pyautogui.keyUp("ctrl")
+
+# 조합키 직접 구현하기 (2)
+pyautogui.keyDown("ctrl")
+pyautogui.press("a")
+pyautogui.keyUp("ctrl")
+
+pyautogui.write("12345")
+pyautogui.write("Hello World", interval=1)
+
+
+pyautogui.write(["w", "o", "r", "l", "d", "left", "left", "left", "left", "left"])
+
+
+
