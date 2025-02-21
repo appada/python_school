@@ -1,0 +1,121 @@
+import flet as ft
+import time
+import pyautogui
+import threading
+
+def main(page: ft.Page):
+    data_list = [{'x': 1, 'y': 1, 'interval': 1.0, 'clicks': 1, 'resttime': 1.0}]  # CRUD 리스트
+
+    def add_data(e):
+        x = int(X.value)
+        y = int(Y.value)
+        interval = float(interval_field.value)
+        clicks = int(clicks_field.value)
+        resttime = float(resttime_field.value)
+        data = {'x': x, 'y': y, 'interval': interval, 'clicks': clicks, 'resttime': resttime}
+        data_list.append(data)
+        update_data_list()
+        clear_fields()
+
+    def update_data_list():
+        data_display.controls.clear()
+        for i, data in enumerate(data_list):
+            data_row = ft.Row([
+                ft.Text(str(data['x']), width=100),
+                ft.Text(str(data['y']), width=100),
+                ft.Text(str(data['interval']), width=90 ),
+                ft.Text(str(data['clicks']), width=90),
+                ft.Text(str(data['resttime']), width=90),
+                ft.ElevatedButton("Edit", on_click=lambda e, index=i: edit_data(index)),
+                ft.ElevatedButton("Delete", on_click=lambda e, index=i: delete_data(index))
+            ])
+            data_display.controls.append(data_row)
+        page.update()
+
+    def edit_data(index):
+        data = data_list[index]
+        X.value = str(data['x'])
+        Y.value = str(data['y'])
+        interval_field.value = str(data['interval'])
+        clicks_field.value = str(data['clicks'])
+        resttime_field.value = str(data['resttime'])
+        update_button.user_data = index
+        add_button.visible = False
+        update_button.visible = True
+        page.update()
+
+    def update_data(e):
+        index = update_button.user_data
+        data_list[index] = {
+            'x': int(X.value),
+            'y': int(Y.value),
+            'interval': float(interval_field.value),
+            'clicks': int(clicks_field.value),
+            'resttime': float(resttime_field.value)
+        }
+        clear_fields()
+        update_data_list()
+        add_button.visible = True
+        update_button.visible = False
+        page.update()
+
+    def delete_data(index):
+        del data_list[index]
+        update_data_list()
+
+    def clear_fields():
+        X.value = ""
+        Y.value = ""
+        interval_field.value = ""
+        clicks_field.value = ""
+        resttime_field.value = ""
+
+    def print_data_list(e):
+        for amouse in data_list:
+            print(amouse)
+            x = int(amouse['x'])
+            y = int(amouse['y'])
+            interval = float(amouse['interval'])
+            clicks = int(amouse['clicks'])
+            resttime = int(amouse['resttime'])
+
+
+            for index in range(clicks):
+                # if stop_flag.is_set():
+                #     break
+                pyautogui.click(x, y)
+                time.sleep(interval)
+            time.thread_time()
+            print('done')
+
+
+    X = ft.TextField(label="X", width=100)
+    Y = ft.TextField(label="Y", width=100)
+    interval_field = ft.TextField(label="Interval seconds", width=90)
+    clicks_field = ft.TextField(label="Number of Clicks", width=90)
+    resttime_field = ft.TextField(label="Rest seconds", width=90)
+    add_button = ft.ElevatedButton(text="Add", on_click=add_data)
+    update_button = ft.ElevatedButton(text="Update", on_click=update_data, visible=False)
+    start_button = ft.ElevatedButton(text="START AUTO MOUSE", on_click=print_data_list)
+    mouse_position_text = ft.Text(value="Mouse Position: (0, 0)", size=20)
+
+    input_fields = ft.Row([X, Y, interval_field, clicks_field, resttime_field, add_button, update_button])
+    data_display = ft.Column()
+
+    page.add(ft.Row([mouse_position_text, start_button]),input_fields)
+    page.add(data_display)
+
+
+    def update_mouse_position():
+        while True:
+            x, y = pyautogui.position()
+            mouse_position_text.value = f"Mouse Position: ({x}, {y})"
+            page.update()
+            time.sleep(0.1)
+
+
+    threading.Thread(target=update_mouse_position).start()
+
+
+if __name__ == "__main__":
+    ft.app(target=main)
