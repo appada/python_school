@@ -154,3 +154,5 @@ def emotion_quiz():
 
 # 퀴즈 실행
 emotion_quiz()
+
+#pip install playsound==1.2.2
